@@ -14,6 +14,7 @@ namespace MAS
         //create the device agent's properties: task and valuation
         private int task;
         private int valuation;
+        private int penaltyCost; //the penalty cost for sending the task to the cloud server
 
         //create the device agent's constructor
         public DeviceAgent(int task, int valuation)
@@ -41,8 +42,19 @@ namespace MAS
             // from the edge servers.
             if (messages.Content.StartsWith("Auction Result"))
             {
-                // process the auction result received from the marketplace
+                // process the auction result received from the marketplace and 
+                // check if the auction result is accepted or rejected. Also,
                 // update behaviour to handle the auction result
+                bool successfulAuction = true;
+
+                if (!successfulAuction)
+                {
+                    SendTaskToCentralisedCloudServer(); //send the task to the centralised cloud server
+                    PayPenaltyCost(); //pay the penalty cost for sending the task to the cloud server
+                }
+
+
+                // if the auction result is rejected, send the task to the edge server
             }
             else if (messages.Content.StartsWith("Auction Request"))
             {
@@ -54,10 +66,26 @@ namespace MAS
             }
         }
 
+
         private int CalculateBidValue()
         {
-            // do something...
+            throw new NotImplementedException(); // remove this and implement logic
         }
+
+        private void SendTaskToCentralisedCloudServer()
+        {
+            throw new NotImplementedException(); // remove this and implement logic
+        }
+
+        private void PayPenaltyCost()
+        {
+            // Implement logic to deduct penalty cost from device's funds or resources
+            // Deduct the cost from the device's valuation or available funds
+            // For example:
+            int remainingFunds = valuation - penaltyCost;
+            Console.WriteLine($"Penalty cost paid. Remaining funds: {remainingFunds}");
+        }
+
 
         //create the device agent's act dafult method
         public override void ActDefault()

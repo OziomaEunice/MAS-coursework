@@ -60,7 +60,7 @@ namespace MAS
 
         private int ExtractBidValueFromMessage(Message message)
         {
-            // do something...
+            throw new NotImplementedException();  // remove this and implement logic
         }
     }
 }
