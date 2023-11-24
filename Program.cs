@@ -13,24 +13,36 @@ namespace MAS
             // create a new environment
             var env = new EnvironmentMas(100);
 
-            // create the auctioneer agent
+            // create the marketplace agent and add it to the environment
+            MarketplaceAgent marketplace = new MarketplaceAgent(); env.Add(marketplace, "marketplace");
 
 
-            // create the edge server agents
+            // create the edge server agents and add them to the environment
+            EdgeServerAgent edgeServer1 = new EdgeServerAgent(); env.Add(edgeServer1, "Edge Server 1");
+            EdgeServerAgent edgeServer2 = new EdgeServerAgent(); env.Add(edgeServer2, "Edge Server 2");
+            EdgeServerAgent edgeServer3 = new EdgeServerAgent(); env.Add(edgeServer3, "Edge Server 3");
+            EdgeServerAgent edgeServer4 = new EdgeServerAgent(); env.Add(edgeServer4, "Edge Server 4");
+            EdgeServerAgent edgeServer5 = new EdgeServerAgent(); env.Add(edgeServer5, "Edge Server 5");
+            EdgeServerAgent edgeServer6 = new EdgeServerAgent(); env.Add(edgeServer6, "Edge Server 6");
+            EdgeServerAgent edgeServer7 = new EdgeServerAgent(); env.Add(edgeServer7, "Edge Server 7");
+            EdgeServerAgent edgeServer8 = new EdgeServerAgent(); env.Add(edgeServer8, "Edge Server 8");
 
 
             // create the device agents and add them to the environment
-            var device = new DeviceAgent(); env.Add(device, "device");
-
-
-            DeviceAgent device1 = new DeviceAgent(1, 20);
-            DeviceAgent device2 = new DeviceAgent(2, 20);
+            DeviceAgent device1 = new DeviceAgent(1, 20); env.Add(device1, "Mobile device");
+            DeviceAgent device2 = new DeviceAgent(2, 20); env.Add(device2, "Windows Laptop device");
+            DeviceAgent device3 = new DeviceAgent(3, 20); env.Add(device3, "Mac Laptop device");
+            DeviceAgent device4 = new DeviceAgent(4, 20); env.Add(device4, "Desktop device");
+            DeviceAgent device5 = new DeviceAgent(5, 20); env.Add(device5, "Tablet device");
+            DeviceAgent device6 = new DeviceAgent(6, 20); env.Add(device6, "Smart TV device");
 
             
 
 
             // start the environment
             env.Start();
+
+            System.Threading.Thread.Sleep(10); 
 
             Console.ReadLine(); //wait for the user to press enter
         }

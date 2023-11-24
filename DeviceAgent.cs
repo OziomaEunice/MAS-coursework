@@ -30,23 +30,33 @@ namespace MAS
         public override void Setup()
         {
             //create the device agent's behaviour
-            Send("auctioneer", $"search{valuation}"); //send the valuation to the auctioneer
+            Send("marketplace", $"search £{valuation}"); //send the valuation to the auctioneer
         }
 
 
         //create the device agent's act method
         public override void Act(Message messages)
         {
-            //create the device agent's behaviour
-            if (messages.Content.ToString().Contains("bid")) //if the message contains the word "bid"
+            // create the device agent's behaviour to handle bidding for resources
+            // from the edge servers.
+            if (messages.Content.StartsWith("Auction Result"))
             {
-                string[] message = messages.Content.ToString().Split(' '); //split the message into an array of strings
-                int bid = int.Parse(message[1]); //parse the second string in the array into an integer
-                if (bid > valuation) //if the bid is greater than the valuation
-                {
-                    Send("auctioneer", $"accept{bid}"); //send the bid to the auctioneer
-                }
+                // process the auction result received from the marketplace
+                // update behaviour to handle the auction result
             }
+            else if (messages.Content.StartsWith("Auction Request"))
+            {
+                // handle the auction request from the marketplace
+                // prepare and send the bids to the marketplace
+                int availableTask = 8;
+                int bidValue = CalculateBidValue(); //calculate the bid value based on the task and valuation
+                Send("marketplace", $"Bid {availableTask} £{bidValue}"); //send the bid to the auctioneer
+            }
+        }
+
+        private int CalculateBidValue()
+        {
+            // do something...
         }
 
         //create the device agent's act dafult method

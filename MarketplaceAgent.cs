@@ -22,5 +22,50 @@ namespace MAS
         {
             _serviceProviders = new Dictionary<string, List<string>>();
         }
+
+
+        // create the marketplace agent's act method
+        public override void Act(Message message)
+        {
+            try
+            {
+                Console.WriteLine($"\t{message.Format()}");
+                message.Parse(out string action, out List<string> parameters);
+
+                switch (action)
+                {
+                    case "search":
+                        // handle the search request from the device agent
+                        // prepare and send the auction request to the edge servers
+                        //[...]
+
+                        Send("edge servers", $"Auction Request");
+                        break;
+
+                    case "Auction Result":
+                        // process the auction result received from the edge servers
+                        // update behaviour to handle the auction result
+                        //[...]
+
+                        Send("device", $"Auction Result");
+                        break;
+
+                    case "Bid":
+                        // process the auction result received from the edge servers
+                        // update behaviour to handle the auction result
+                        //[...]
+
+                        Send("device", $"Auction Result");
+                        break;
+
+                    default:
+                        break;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
     }
 }
