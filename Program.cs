@@ -1,45 +1,41 @@
 ﻿using ActressMas;
 using System;
-
-// this class belongs to the environment. It is responsible for creating the 
-// agents and the environment.
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace MAS
 {
-    internal class Program
+    public class Program
     {
-        private static void Main(string[] args)
+        static void Main(string[] args)
         {
-            // create a new environment
             var env = new EnvironmentMas(100);
 
-            // create the marketplace agent and add it to the environment
-            MarketplaceAgent marketplace = new MarketplaceAgent(); env.Add(marketplace, "marketplace");
+
+            // create marketplace agent and add it to the environment
+            var marketplaceAgent = new MarketplaceAgent(); env.Add(marketplaceAgent, "marketplace");
+
+            // create cloud server agent and add it to the environment
+            CloudServerAgent cloudServerAgent = new CloudServerAgent(); env.Add(cloudServerAgent, "cloudServer");
+
+            // create edge server agent and add it to the environment
+            EdgeServerAgent edgeServerAgent1 = new EdgeServerAgent(); env.Add(edgeServerAgent1, "edgeServer1");
+            EdgeServerAgent edgeServerAgent2 = new EdgeServerAgent(); env.Add(edgeServerAgent2, "edgeServer2");
+            EdgeServerAgent edgeServerAgent3 = new EdgeServerAgent(); env.Add(edgeServerAgent3, "edgeServer3");
+
+            // create device agent and add it to the environment
+            DeviceAgent deviceAgent1 = new DeviceAgent(); env.Add(deviceAgent1, "Mobile device");
+            DeviceAgent deviceAgent2 = new DeviceAgent(); env.Add(deviceAgent2, "Laptop device");
+            DeviceAgent deviceAgent3 = new DeviceAgent(); env.Add(deviceAgent3, "Desktop device");
+            DeviceAgent deviceAgent4 = new DeviceAgent(); env.Add(deviceAgent4, "Tablet device");
+            DeviceAgent deviceAgent5 = new DeviceAgent(); env.Add(deviceAgent5, "Smart TV device");
 
 
-            // create the edge server agents and add them to the environment
-            EdgeServerAgent edgeServer1 = new EdgeServerAgent(); env.Add(edgeServer1, "Edge Server 1");
-            EdgeServerAgent edgeServer2 = new EdgeServerAgent(); env.Add(edgeServer2, "Edge Server 2");
-            EdgeServerAgent edgeServer3 = new EdgeServerAgent(); env.Add(edgeServer3, "Edge Server 3");
-            EdgeServerAgent edgeServer4 = new EdgeServerAgent(); env.Add(edgeServer4, "Edge Server 4");
-            EdgeServerAgent edgeServer5 = new EdgeServerAgent(); env.Add(edgeServer5, "Edge Server 5");
-
-
-            // create the device agents and add them to the environment
-            DeviceAgent device1 = new DeviceAgent(1, 20); env.Add(device1, "Mobile device");
-            DeviceAgent device2 = new DeviceAgent(4, 20); env.Add(device2, "Desktop device");
-            DeviceAgent device3 = new DeviceAgent(5, 20); env.Add(device3, "Tablet device");
-            DeviceAgent device4 = new DeviceAgent(6, 20); env.Add(device4, "Smart TV device");
-
-            
-
-
-            // start the environment
             env.Start();
 
-            System.Threading.Thread.Sleep(10); 
-
-            Console.ReadLine(); //wait for the user to press enter
+            Console.ReadLine();
         }
     }
 }

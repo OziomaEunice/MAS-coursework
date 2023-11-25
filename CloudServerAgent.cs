@@ -7,25 +7,22 @@ using System.Threading.Tasks;
 
 namespace MAS
 {
-    public class EdgeServerAgent : Agent
+    public class CloudServerAgent : Agent
     {
-        private int capacity;
-        private int costPerUnit;
+        private int costOfService;
         private static Random random = new Random();
 
-        public EdgeServerAgent(int capacity, int costPerUnit)
+        public CloudServerAgent(int costOfService)
         {
-            this.capacity = capacity;
-            this.costPerUnit = costPerUnit;
+            this.costOfService = costOfService;
         }
 
-        public EdgeServerAgent() { }
+        public CloudServerAgent() { }
 
         public override void Setup()
         {
-            capacity = random.Next(100, 1000);  // 100Mb to 999Mb
-            costPerUnit = random.Next(10, 100);  // 0.10p to 0.99p
-            Send("marketplace", $"Offer {capacity}Mb with cost per unit at 0.{costPerUnit}p");
+            costOfService = random.Next(1000, 2000);  // £1000 to £1999
+            Send("marketplace", $"Cost of Service starts at £{costOfService}");
         }
 
         public override void Act(Message message)
