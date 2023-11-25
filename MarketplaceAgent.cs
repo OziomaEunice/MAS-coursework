@@ -14,13 +14,15 @@ namespace MAS
     {
         // create the marketplace agent's properties to store bids and resource offers in
         // a dictionary lists
-        private Dictionary<string, List<string>> _serviceProviders;
+        private Dictionary<string, List<string>> edgeServerOffers;
+        private Dictionary<string, List<string>> deviceBids;
 
 
         // create the marketplace agent's constructor
         public MarketplaceAgent()
         {
-            _serviceProviders = new Dictionary<string, List<string>>();
+            edgeServerOffers = new Dictionary<string, List<string>>();
+            deviceBids = new Dictionary<string, List<string>>();
         }
 
 
@@ -32,32 +34,18 @@ namespace MAS
                 Console.WriteLine($"\t{message.Format()}");
                 message.Parse(out string action, out List<string> parameters);
 
+                // create the marketplace agent's behaviour to handle the bidding for resources
+                // from the edge servers and the bidding for tasks from the device agents.
                 switch (action)
                 {
-                    case "search":
-                        // handle the search request from the device agent
-                        // prepare and send the auction request to the edge servers
-                        //[...]
-
-                        Send("edge servers", $"Auction Request");
+                    case "Offer":
+                        // store the edge server's offer in the dictionary list
+                        edgeServerOffers.Add(message.Sender, parameters);
                         break;
-
-                    case "Auction Result":
-                        // process the auction result received from the edge servers
-                        // update behaviour to handle the auction result
-                        //[...]
-
-                        Send("device", $"Auction Result");
-                        break;
-
                     case "Bid":
-                        // process the auction result received from the edge servers
-                        // update behaviour to handle the auction result
-                        //[...]
-
-                        Send("device", $"Auction Result");
+                        // store the device agent's bid in the dictionary list
+                        deviceBids.Add(message.Sender, parameters);
                         break;
-
                     default:
                         break;
                 }

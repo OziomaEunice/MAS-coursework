@@ -15,6 +15,7 @@ namespace MAS
         private int task;
         private int valuation;
         private int penaltyCost; //the penalty cost for sending the task to the cloud server
+        private static Random rnd = new Random(); // create a random object to generate random numbers
 
         //create the device agent's constructor
         public DeviceAgent(int task, int valuation)
@@ -27,11 +28,13 @@ namespace MAS
         public DeviceAgent() {}
 
 
-        //create the device agent's setup method
+        // create the device agent's setup method
         public override void Setup()
         {
-            //create the device agent's behaviour
-            Send("marketplace", $"search £{valuation}"); //send the valuation to the auctioneer
+            task = rnd.Next(50, 300); // generate a random task between 50Mb and 299Mb
+            valuation = rnd.Next(50, 101); // generate a random valuation between £50 and £100
+            // send the device agent's bid task and value to the marketplace agent
+            Send("marketplace", $"Bid {task}Mb for £{valuation}");
         }
 
 
@@ -40,30 +43,6 @@ namespace MAS
         {
             // create the device agent's behaviour to handle bidding for resources
             // from the edge servers.
-            if (messages.Content.StartsWith("Auction Result"))
-            {
-                // process the auction result received from the marketplace and 
-                // check if the auction result is accepted or rejected. Also,
-                // update behaviour to handle the auction result
-                bool successfulAuction = true;
-
-                if (!successfulAuction)
-                {
-                    SendTaskToCentralisedCloudServer(); //send the task to the centralised cloud server
-                    PayPenaltyCost(); //pay the penalty cost for sending the task to the cloud server
-                }
-
-
-                // if the auction result is rejected, send the task to the edge server
-            }
-            else if (messages.Content.StartsWith("Auction Request"))
-            {
-                // handle the auction request from the marketplace
-                // prepare and send the bids to the marketplace
-                int availableTask = 8;
-                int bidValue = CalculateBidValue(); //calculate the bid value based on the task and valuation
-                Send("marketplace", $"Bid {availableTask} £{bidValue}"); //send the bid to the auctioneer
-            }
         }
 
 

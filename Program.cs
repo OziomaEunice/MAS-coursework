@@ -23,18 +23,13 @@ namespace MAS
             EdgeServerAgent edgeServer3 = new EdgeServerAgent(); env.Add(edgeServer3, "Edge Server 3");
             EdgeServerAgent edgeServer4 = new EdgeServerAgent(); env.Add(edgeServer4, "Edge Server 4");
             EdgeServerAgent edgeServer5 = new EdgeServerAgent(); env.Add(edgeServer5, "Edge Server 5");
-            EdgeServerAgent edgeServer6 = new EdgeServerAgent(); env.Add(edgeServer6, "Edge Server 6");
-            EdgeServerAgent edgeServer7 = new EdgeServerAgent(); env.Add(edgeServer7, "Edge Server 7");
-            EdgeServerAgent edgeServer8 = new EdgeServerAgent(); env.Add(edgeServer8, "Edge Server 8");
 
 
             // create the device agents and add them to the environment
             DeviceAgent device1 = new DeviceAgent(1, 20); env.Add(device1, "Mobile device");
-            DeviceAgent device2 = new DeviceAgent(2, 20); env.Add(device2, "Windows Laptop device");
-            DeviceAgent device3 = new DeviceAgent(3, 20); env.Add(device3, "Mac Laptop device");
-            DeviceAgent device4 = new DeviceAgent(4, 20); env.Add(device4, "Desktop device");
-            DeviceAgent device5 = new DeviceAgent(5, 20); env.Add(device5, "Tablet device");
-            DeviceAgent device6 = new DeviceAgent(6, 20); env.Add(device6, "Smart TV device");
+            DeviceAgent device2 = new DeviceAgent(4, 20); env.Add(device2, "Desktop device");
+            DeviceAgent device3 = new DeviceAgent(5, 20); env.Add(device3, "Tablet device");
+            DeviceAgent device4 = new DeviceAgent(6, 20); env.Add(device4, "Smart TV device");
 
             
 
