@@ -29,7 +29,7 @@ namespace MAS
         {
             try
             {
-                Console.WriteLine($"\t{message.Format()}");
+                Console.WriteLine($"\t{message.Format()}\n");
                 message.Parse(out string action, out List<string> parameters);
 
                 switch (action)
