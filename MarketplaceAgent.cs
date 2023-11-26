@@ -22,7 +22,7 @@ namespace MAS
 
         public override void Setup()
         {
-            Console.WriteLine("====================\nAUCTION SYSTEM\n====================");
+            Console.WriteLine("============================\n******AUCTION SYSTEM******\n============================");
         }
 
         public override void Act(Message message)
@@ -35,11 +35,11 @@ namespace MAS
                 switch (action)
                 {
                     case "Offer":
-                        Send("edgeServer1", $"Hi");
+                        Send("edgeServer1", $"Hey");
                         break;
 
                     case "Bid":
-                        Send("Mobile device", $"Hi");
+                        Send("Mobile device", $"Ciao");
                         break;
 
                     case "Cost":

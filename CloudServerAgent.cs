@@ -21,8 +21,8 @@ namespace MAS
 
         public override void Setup()
         {
-            costOfService = random.Next(1000, 2000);  // £1000 to £1999
-            Send("marketplace", $"Cost of Service starts at £{costOfService}");
+            costOfService = random.Next(900, 1200);  // £900 to £1199
+            Send("marketplace", $"Cost of Service fee starts at £{costOfService}");
         }
 
         public override void Act(Message message)
