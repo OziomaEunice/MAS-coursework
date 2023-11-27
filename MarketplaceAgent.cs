@@ -44,6 +44,15 @@ namespace MAS
                 Console.WriteLine($"\t{message.Format()}\n");
                 message.Parse(out string action, out List<string> parameters);
 
+                /* // Debugging: Print parameters to check their content
+                *  Console.WriteLine("Action: " + action);
+                *  Console.WriteLine("Parameters:");
+                *   foreach (var param in parameters)
+                    {
+                        Console.WriteLine(param);
+                    }
+                */
+
                 switch (action)
                 {
                     case "Offer":
