@@ -23,15 +23,15 @@ namespace MAS
 {
     public class MarketplaceAgent : Agent
     {
-        private Dictionary<string, List<string>> edgeServerOffer;
-        private Dictionary<string, List<string>> deviceBid;
-        private Dictionary<string, List<string>> cloudServerOffer;
+        private List<string> edgeServerOffer;
+        private List<string> deviceBid;
+        private List<string> cloudServerOffer;
 
         public MarketplaceAgent()
         {
-            edgeServerOffer = new Dictionary<string, List<string>>();
-            deviceBid = new Dictionary<string, List<string>>();
-            cloudServerOffer = new Dictionary<string, List<string>>();
+            edgeServerOffer = new List<string>();
+            deviceBid = new List<string>();
+            cloudServerOffer = new List<string>();
         }
 
         public override void Setup()
