@@ -5,6 +5,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
+/**
+ * This class represents an edge server agent.
+ * It has capacity to process the tasks sent to it by the device agents. 
+ * In processing a task, it has a cost (measured in pence) that it needs to pay per 10Mb of data processed.
+ * It can accept or reject bids from device agents, depending on whether it has the capacity to process the task.
+ * Whatever it decides, the message is sent via the marketplace to the device agent.
+ */
+
 namespace MAS
 {
     public class EdgeServerAgent : Agent

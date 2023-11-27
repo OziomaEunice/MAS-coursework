@@ -5,6 +5,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
+/**
+ * This class represents a device agent.
+ * A device agent has a task it desires the edge server to perform.
+ * It sends a request to the edge server, through the marketplace, to perform a task, with the value of the task included.
+ * This form of request is a bid, which will be accepted or rejected by the edge server. 
+ */
+
 namespace MAS
 {
     public class DeviceAgent : Agent

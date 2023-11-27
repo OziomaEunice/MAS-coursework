@@ -5,6 +5,20 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
+/**
+ * This class represents a marketplace agent.
+ * It is responsible for managing the marketplace. It manages the list of bids and offers of both
+ * buyers (device) and sellers (edge server). It also manages the list of transactions that have been made.
+ * If a transaction is made, it will notify the buyer and seller.
+ * If a bid is unsuccessful, it will notify the buyer and will remove the bid from the list. Also, it 
+ * will notify the cloud server agent, which will take care of the device's bid.
+ */
+
+/*
+ * It uses the double auction mechanism.
+ */
+
 namespace MAS
 {
     public class MarketplaceAgent : Agent
