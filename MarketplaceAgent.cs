@@ -23,15 +23,13 @@ namespace MAS
 {
     public class MarketplaceAgent : Agent
     {
-        private List<string> edgeServerOffer;
-        private List<string> deviceBid;
-        private List<string> cloudServerOffer;
+        private List<Offer> edgeServerOffer;
+        private List<Bid> deviceBid;
 
         public MarketplaceAgent()
         {
-            edgeServerOffer = new List<string>();
-            deviceBid = new List<string>();
-            cloudServerOffer = new List<string>();
+            edgeServerOffer = new List<Offer>();
+            deviceBid = new List<Bid>();
         }
 
         public override void Setup()
@@ -49,15 +47,20 @@ namespace MAS
                 switch (action)
                 {
                     case "Offer":
-                        Send("edgeServer1", $"Hey");
+                        // when receive the offers from the edge server handle add them to the list of offers
+                        HandleOffer(message.Sender, Convert.ToInt32(parameters[0]), Convert.ToDouble(parameters[3]));
                         break;
 
                     case "Bid":
-                        Send("Mobile device", $"Ciao");
+                        // when receive the bids from the device, add them to the list of bids
+                        HandleBid(message.Sender, Convert.ToInt32(parameters[0]), Convert.ToDouble(parameters[4]));
                         break;
 
                     case "Cost":
                         Send("cloudServer", $"Hi");
+                        break;
+
+                    default:
                         break;
                 }
             }
@@ -65,6 +68,46 @@ namespace MAS
             {
                 Console.WriteLine(ex.Message);
             }
+        }
+
+        private void HandleOffer(string edgeServer, int capacity, double price)
+        {
+            // create an offer object from the received parameters and add it to the list of the edgeServerOffer list
+            Offer offer = new Offer
+            {
+                EdgeServerAgentID = edgeServer,
+                Quantity = capacity,
+                Price = price
+            }; 
+            
+            edgeServerOffer.Add(offer);
+
+            DoubleAuction();  // call the double auction method
+        }
+
+        private void HandleBid(string device, int size, double price)
+        {
+            // create a bid object from the received parameters and add it to the list of the deviceBid list
+            Bid bid = new Bid
+            {
+                DeviceAgentID = device,
+                Quantity = size,
+                Price = price
+            };
+
+            deviceBid.Add(bid);
+
+            DoubleAuction();  // call the double auction method
+        }
+
+        private void DoubleAuction()
+        {
+            // Implement double auction using average mechanism:
+            // Order the bids and offers by price
+            // Find the average price and determine:
+            // transaction is possible => if the average price is between the highest bid and the lowest offer
+            // transaction is not possible => if the average price is higher than the highest bid or lower than the lowest offer
+            // Notify the buyer (device) and seller (edge server)
         }
     }
 }

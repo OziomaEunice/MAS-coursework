@@ -20,23 +20,21 @@ namespace MAS
     {
         public int Capacity { get; set; }
         public double CostPerUnit { get; set; }
-        private int capacity;
-        private int costPerUnit;
         private static Random random = new Random();
 
-        public EdgeServerAgent(int capacity, int costPerUnit)
+        public EdgeServerAgent(int capacity, double costPerUnit)
         {
-            this.capacity = capacity;
-            this.costPerUnit = costPerUnit;
+            Capacity = capacity;
+            CostPerUnit = costPerUnit;
         }
 
         public EdgeServerAgent() { }
 
         public override void Setup()
         {
-            capacity = random.Next(100, 1000);  // 100Mb to 999Mb
-            costPerUnit = random.Next(10, 100);  // 0.10p to 0.99p
-            Send("marketplace", $"Offer {capacity}Mb with cost per unit at 0.{costPerUnit}p");
+            Capacity = random.Next(100, 1000);  // 100Mb to 999Mb
+            CostPerUnit = random.Next(10, 100);  // 0.10p to 0.99p
+            Send("marketplace", $"Offer {Capacity} Mb at {CostPerUnit} pence");
         }
 
         public override void Act(Message message)

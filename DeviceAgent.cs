@@ -19,23 +19,21 @@ namespace MAS
     {
         public int TaskSize { get; set; }
         public double Valuation { get; set; }
-        private int taskSize;
-        private int valuation;
         private static Random random = new Random();
 
-        public DeviceAgent(int taskSize, int valuation)
+        public DeviceAgent(int taskSize, double valuation)
         {
-            this.taskSize = taskSize;
-            this.valuation = valuation;
+            TaskSize = taskSize;
+            Valuation = valuation;
         }
 
         public DeviceAgent() { }
 
         public override void Setup()
         {
-            taskSize = random.Next(100, 1100);  // 100Mb to 1099Mb
-            valuation = random.Next(30, 250);  // £30 to £249
-            Send("marketplace", $"Bid {taskSize}Mb with valuation at £{valuation}");
+            TaskSize = random.Next(100, 1100);  // 100Mb to 1099Mb
+            Valuation = random.Next(30, 250);  // £30 to £249
+            Send("marketplace", $"Bid {TaskSize} Mb at £ {Valuation}");
         }
 
         public override void Act(Message message)
