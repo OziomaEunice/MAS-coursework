@@ -147,12 +147,19 @@ namespace MAS
                 // calculate the price as the average of the kth values
                 double price = (orderedBids[k].Price + orderedOffers[k].Price) / 2;
 
+
+                // To avoid getting the error "Index was out of range. Must be non-negative and less than the size of the collection."
+                // get the minimum value between the number of bids and offers
+                int min = Math.Min(orderedBids.Count, orderedOffers.Count);
                 // facilitate the transaction by letting first k sellers (edge server) sell offer to the first k buyers (device)
                 for (int i = 0; i < k; i++)
                 {
-                    // notify the buyer (device) and seller (edge server)
-                    NotifyDevice(orderedBids[i].DeviceAgentID, price);
-                    NotifyEdgeServer(orderedOffers[i].EdgeServerAgentID, price);
+                    if (orderedBids[i].Price >= orderedOffers[i].Price) 
+                    {
+                        // notify the buyer (device) and seller (edge server)
+                        NotifyDevice(orderedBids[i].DeviceAgentID, price);
+                        NotifyEdgeServer(orderedOffers[i].EdgeServerAgentID, price);
+                    }
                 }
             }
         }
