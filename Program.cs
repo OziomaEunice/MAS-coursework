@@ -33,7 +33,7 @@ namespace MAS
             DeviceAgent deviceAgent5 = new DeviceAgent(); env.Add(deviceAgent5, "Smart TV device");
 
 
-            env.Start();
+            env.Start(); // start the environment
 
             Console.ReadLine();
         }
