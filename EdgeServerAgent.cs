@@ -18,6 +18,8 @@ namespace MAS
 {
     public class EdgeServerAgent : Agent
     {
+        public int Capacity { get; set; }
+        public double CostPerUnit { get; set; }
         private int capacity;
         private int costPerUnit;
         private static Random random = new Random();

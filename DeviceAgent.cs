@@ -17,6 +17,8 @@ namespace MAS
 {
     public class DeviceAgent : Agent
     {
+        public int TaskSize { get; set; }
+        public double Valuation { get; set; }
         private int taskSize;
         private int valuation;
         private static Random random = new Random();
