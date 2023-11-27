@@ -65,9 +65,9 @@ namespace MAS
                         HandleBid(message.Sender, Convert.ToInt32(parameters[0]), Convert.ToDouble(parameters[4]));
                         break;
 
-                    case "Cost":
-                        Send("cloudServer", $"Hi");
-                        break;
+                    //case "Cost":
+                        //Send("cloudServer", $"Hi");
+                        //break;
 
                     default:
                         break;
@@ -91,6 +91,12 @@ namespace MAS
             
             edgeServerOffer.Add(offer);
 
+            // check that the offer has been added to the list
+            if (edgeServerOffer.Count > 0)
+            {
+                Send(edgeServer, $"{offer.Quantity} Mb at £ {offer.Price * 10} for each 10Mb added");
+            }
+
             DoubleAuction();  // call the double auction method
         }
 
@@ -105,6 +111,12 @@ namespace MAS
             };
 
             deviceBid.Add(bid);
+
+            // check that the bid has been added to the list
+            if (deviceBid.Count > 0)
+            {
+                Send(device, $"{bid.Quantity} Mb and £ {bid.Price} added");
+            }
 
             DoubleAuction();  // call the double auction method
         }
