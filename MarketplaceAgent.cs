@@ -32,7 +32,7 @@ namespace MAS
         {
             try
             {
-                Console.WriteLine($"\t{message.Format()}\n");
+                Console.WriteLine($"\t{message.Format()}");
                 message.Parse(out string action, out List<string> parameters);
 
                 switch (action)
@@ -100,7 +100,7 @@ namespace MAS
             else
             {
                 // send a message to the device that there are no resources available. Also, notify the cloud server agent.
-                Send(device, $"no resources available");
+                Send(device, $"no resources available. Please, head on to the cloud server");
                 Send("cloudServer", $"process {device} {resource}");
             }   
         }
