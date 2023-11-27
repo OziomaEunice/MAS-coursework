@@ -10,7 +10,7 @@ using System.Threading.Tasks;
  * This class represents a cloud server agent.
  * It is responsible for processing tasks of device agents, who are not able to find a suitable edge server.
  * It charges a fee for processing the task, which can be much higher than the value of task that the device agent bid for.
- * */
+ */
 
 namespace MAS
 {
