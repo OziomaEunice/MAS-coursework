@@ -5,6 +5,9 @@ using System.Reflection.PortableExecutable;
 
 /**
  * This class represents a marketplace agent.
+ * 
+ * ********It uses the Vickrey auction mechanism to allocate resources to device agents.********
+ * 
  * It is responsible for managing the marketplace. It manages the list of bids and offers of both
  * buyers (device) and sellers (edge server). It also manages the list of transactions that have been made.
  * If a transaction is made, it will notify the buyer and seller.
