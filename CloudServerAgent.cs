@@ -12,6 +12,7 @@ using System.Threading.Tasks;
  * It charges a fee for processing the task, which can be much higher than the value of task that the device agent bid for.
  */
 
+
 namespace MAS
 {
     public class CloudServerAgent : Agent
