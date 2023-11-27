@@ -111,12 +111,60 @@ namespace MAS
 
         private void DoubleAuction()
         {
-            // Implement double auction using average mechanism:
-            // Order the bids and offers by price
-            // Find the average price and determine:
-            // transaction is possible => if the average price is between the highest bid and the lowest offer
-            // transaction is not possible => if the average price is higher than the highest bid or lower than the lowest offer
-            // Notify the buyer (device) and seller (edge server)
+            /* Implement double auction using average mechanism:
+                1. Order the bids and offers by price and quantity
+                2. Calculate the breakeven index (k) based on ordered bids and offers
+                3. Find the price as the average of the kth values (price = (bk + ok)/2:
+                4. Facilitate the transaction by letting first k sellers (edge server) sell offer to the first k buyers (device)
+                5. Notify the buyer (device) and seller (edge server)
+            */
+
+            // check that offers and bids are in the list before ordering them
+            if (!edgeServerOffer.Any() || !deviceBid.Any())
+            {
+                return;
+            }
+            else
+            {
+                // begin to order the prices of the bids and offers
+                var orderedBids = deviceBid.OrderBy(b => b.Price).ToList();
+                var orderedOffers = edgeServerOffer.OrderBy(o => o.Price).ToList();
+
+                // calculate the breakeven index (k)
+                int k = 0;
+
+                for (int i = 0; i < orderedBids.Count; i++)
+                {
+                    // if the price of the bid is greater than or equal to the price of the offer,
+                    // then set k = i
+                    if (orderedBids[i].Price >= orderedOffers[i].Price)
+                    {
+                        k = i;
+                        break;
+                    } 
+                }
+
+                // calculate the price as the average of the kth values
+                double price = (orderedBids[k].Price + orderedOffers[k].Price) / 2;
+
+                // facilitate the transaction by letting first k sellers (edge server) sell offer to the first k buyers (device)
+                for (int i = 0; i < k; i++)
+                {
+                    // notify the buyer (device) and seller (edge server)
+                    NotifyDevice(orderedBids[i].DeviceAgentID, price);
+                    NotifyEdgeServer(orderedOffers[i].EdgeServerAgentID, price);
+                }
+            }
+        }
+
+        private void NotifyDevice(string deviceAgentID, double price)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void NotifyEdgeServer(string edgeServerAgentID, double price)
+        {
+            throw new NotImplementedException();
         }
     }
 }
