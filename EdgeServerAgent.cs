@@ -2,22 +2,34 @@
 using System;
 using System.Collections.Generic;
 
+
+/**
+ * This class represents an edge server agent.
+ * It has capacity to process the tasks sent to it by the device agents. 
+ * In processing a task, it has a cost (measured in pence) that it needs to pay per 10Mb of data processed.
+ * It can accept or reject bids from device agents, depending on whether it has the capacity to process the task.
+ * Whatever it decides, the message is sent via the marketplace to the device agent.
+ */
+
+
 namespace MAS
 {
-    public enum ServiceType { Add, Sub, Mul, Div, Cos };
-
+    public enum ResourceType { CPU, RAM, Storage, Bandwidth };
     public class EdgeServerAgent : Agent
     {
-        private ServiceType _type;
+        private ResourceType resourceType;
+        private int capacity;
+        private int costOf10Mb;
+        private static Random random = new Random();
 
-        public EdgeServerAgent(ServiceType serviceType)
+        public EdgeServerAgent(ResourceType resource)
         {
-            _type = serviceType;
+            resourceType = resource;
         }
 
         public override void Setup()
         {
-            Send("marketplace", $"register {_type}");
+            Send("marketplace", $"register {resourceType}");
         }
 
         public override void Act(Message message)
@@ -29,12 +41,7 @@ namespace MAS
 
                 switch (action)
                 {
-                    case "force-unregister":
-                        HandleForceUnregister();
-                        break;
-
-                    case "request":
-                        HandleRequest(message, parameters);
+                    case "":
                         break;
 
                     default:
@@ -45,42 +52,6 @@ namespace MAS
             {
                 Console.WriteLine(ex.Message);
             }
-        }
-
-        private void HandleForceUnregister()
-        {
-            Send("broker", $"unregister {_type}");
-        }
-
-        private void HandleRequest(Message message, List<string> parameters)
-        {
-            int p1 = Convert.ToInt32(parameters[0]);
-            int p2 = Convert.ToInt32(parameters[1]);
-            int result = 0;
-            //int result = (_type == ServiceType.Add) ? (p1 + p2) : (p1 - p2);
-            switch (_type)
-            {
-                case ServiceType.Add:
-                    result = p1 + p2;
-                    break;
-
-                case ServiceType.Sub:
-                    result = p1 - p2;
-                    break;
-
-                case ServiceType.Mul:
-                    result = p1 * p2;
-                    break;
-
-                case ServiceType.Div:
-                    result = p1 / p2;
-                    break;
-
-                default:
-                    break;
-            }
-
-            Send(message.Sender, $"response {result}");
         }
     }
 }
