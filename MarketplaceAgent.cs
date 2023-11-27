@@ -1,7 +1,7 @@
 ﻿using ActressMas;
 using System;
 using System.Collections.Generic;
-
+using System.Reflection.PortableExecutable;
 
 /**
  * This class represents a marketplace agent.
@@ -42,6 +42,7 @@ namespace MAS
                         break;
 
                     case "bid":
+                        ManageBid(message.Sender, parameters[0]);
                         break;
 
                     default:
@@ -75,6 +76,33 @@ namespace MAS
             }
 
             Console.WriteLine($"\t\n[[Registered {edgeServer} as a service provider for {resource}]]\n\n");
+        }
+
+        private void ManageBid(string device, string resource)
+        {
+            Random random = new Random();
+
+            // if the marketplace finds the resource requested by the device, 
+            // then allocate the resource to the device. Otherwise, notify it that there are no resources available.
+            if (serviceProviders.ContainsKey(resource))
+            {
+                List<string> edgeServers = serviceProviders[resource]; // get the list of edge servers that provide the resource
+
+                // randomly select an edge server from the list
+                int randomIndex = random.Next(edgeServers.Count);
+                string edgeServer = edgeServers[randomIndex];
+
+                // send a message to the edge server to process the task
+                Send(edgeServer, $"process {device} {resource}");
+
+                Console.WriteLine($"\t\n[[Allocated {resource} to {device}]]\n\n");
+            }
+            else
+            {
+                // send a message to the device that there are no resources available. Also, notify the cloud server agent.
+                Send(device, $"no resources available");
+                Send("cloudServer", $"process {device} {resource}");
+            }   
         }
     }
 }
