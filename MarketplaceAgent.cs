@@ -25,11 +25,13 @@ namespace MAS
     {
         private List<Offer> edgeServerOffer;
         private List<Bid> deviceBid;
+        private Dictionary<string, List<string>> resourcesType;
 
         public MarketplaceAgent()
         {
             edgeServerOffer = new List<Offer>();
             deviceBid = new List<Bid>();
+            resourcesType = new Dictionary<string, List<string>>();
         }
 
         public override void Setup()

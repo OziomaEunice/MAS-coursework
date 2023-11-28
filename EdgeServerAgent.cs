@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 /**
  * This class represents an edge server agent.
  * It has capacity to process the tasks sent to it by the device agents. 
+ * In addition, it provides the resources it has available
  * In processing a task, it has a cost (measured in pence) that it needs to pay per 10Mb of data processed.
  * It can accept or reject bids from device agents, depending on whether it has the capacity to process the task.
  * Whatever it decides, the message is sent via the marketplace to the device agent.
@@ -16,16 +17,19 @@ using System.Threading.Tasks;
 
 namespace MAS
 {
+    public enum Resources { CPU, RAM, Bandwidth };
     public class EdgeServerAgent : Agent
     {
         public int Capacity { get; set; }
         public double CostPerUnit { get; set; }
+        private Resources resources;
         private static Random random = new Random();
 
-        public EdgeServerAgent(int capacity, double costPerUnit)
+        public EdgeServerAgent(int capacity, double costPerUnit, Resources resource)
         {
             Capacity = capacity;
             CostPerUnit = costPerUnit;
+            resources = resource;
         }
 
         public EdgeServerAgent() { }
@@ -34,7 +38,9 @@ namespace MAS
         {
             Capacity = random.Next(300, 1201);  // 300Mb to 1200Mb
             CostPerUnit = random.Next(50, 501);  // £50 to £500 per 10Mb
+            
             Send("marketplace", $"Offer {Capacity} Mb at £ {CostPerUnit} per 10Mb");
+            Send("marketplace", $"Resource available: {resources}");
         }
 
         public override void Act(Message message)

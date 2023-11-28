@@ -19,12 +19,14 @@ namespace MAS
     {
         public int TaskSize { get; set; }
         public double Valuation { get; set; }
+        private Resources resources;
         private static Random random = new Random();
 
-        public DeviceAgent(int taskSize, double valuation)
+        public DeviceAgent(int taskSize, double valuation, Resources resource)
         {
             TaskSize = taskSize;
             Valuation = valuation;
+            resources = resource;
         }
 
         public DeviceAgent() { }
@@ -34,6 +36,7 @@ namespace MAS
             TaskSize = random.Next(100, 1100);  // 100Mb to 1099Mb
             Valuation = random.Next(70, 521);  // £70 to £520
             Send("marketplace", $"Bid {TaskSize} Mb at £ {Valuation}");
+            Send("marketplace", $"Search for {resources}");
         }
 
         public override void Act(Message message)
