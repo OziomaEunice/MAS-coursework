@@ -32,7 +32,7 @@ namespace MAS
         public override void Setup()
         {
             TaskSize = random.Next(100, 1100);  // 100Mb to 1099Mb
-            Valuation = random.Next(30, 250);  // £30 to £249
+            Valuation = random.Next(70, 521);  // £70 to £520
             Send("marketplace", $"Bid {TaskSize} Mb at £ {Valuation}");
         }
 

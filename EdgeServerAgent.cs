@@ -32,9 +32,9 @@ namespace MAS
 
         public override void Setup()
         {
-            Capacity = random.Next(100, 1000);  // 100Mb to 999Mb
-            CostPerUnit = random.Next(10, 100);  // 0.10p to 0.99p
-            Send("marketplace", $"Offer {Capacity} Mb at {CostPerUnit} pence");
+            Capacity = random.Next(300, 1201);  // 300Mb to 1200Mb
+            CostPerUnit = random.Next(50, 501);  // £50 to £500 per 10Mb
+            Send("marketplace", $"Offer {Capacity} Mb at £ {CostPerUnit} per 10Mb");
         }
 
         public override void Act(Message message)

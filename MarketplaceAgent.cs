@@ -57,7 +57,7 @@ namespace MAS
                 {
                     case "Offer":
                         // when receive the offers from the edge server handle add them to the list of offers
-                        HandleOffer(message.Sender, Convert.ToInt32(parameters[0]), Convert.ToDouble(parameters[3]));
+                        HandleOffer(message.Sender, Convert.ToInt32(parameters[0]), Convert.ToDouble(parameters[4]));
                         break;
 
                     case "Bid":
@@ -66,7 +66,7 @@ namespace MAS
                         break;
 
                     //case "Cost":
-                        //Send("cloudServer", $"Hi");
+                        //HandleFee(message.Sender, Convert.ToInt32(parameters[8]));
                         //break;
 
                     default:
@@ -79,6 +79,16 @@ namespace MAS
             }
         }
 
+        /*private void HandleFee(string device, int fee)
+        {
+            // Get the fee from the cloud server and submit it to the device agent
+            //Bid bid = new Bid 
+            {
+                DeviceAgentID = device
+            };
+
+            //Send(device, $"The fee received from the cloud server is {fee}");
+        }*/
         private void HandleOffer(string edgeServer, int capacity, double price)
         {
             // create an offer object from the received parameters and add it to the list of the edgeServerOffer list
@@ -94,7 +104,7 @@ namespace MAS
             // check that the offer has been added to the list
             if (edgeServerOffer.Count > 0)
             {
-                Send(edgeServer, $"{offer.Quantity} Mb at £ {offer.Price * 10} for each 10Mb added");
+                Send(edgeServer, $"Added offer at {offer.Quantity} Mb at £ {offer.Price} for each 10Mb to the list");
             }
 
             DoubleAuction();  // call the double auction method
@@ -115,7 +125,7 @@ namespace MAS
             // check that the bid has been added to the list
             if (deviceBid.Count > 0)
             {
-                Send(device, $"{bid.Quantity} Mb and £ {bid.Price} added");
+                Send(device, $"Added bid of {bid.Quantity} Mb at £ {bid.Price} to the list");
             }
 
             DoubleAuction();  // call the double auction method
@@ -123,67 +133,68 @@ namespace MAS
 
         private void DoubleAuction()
         {
-            /* Implement double auction using average mechanism:
-                1. Order the bids and offers by price and quantity
+            /* To allocate the resource, the auction protocol that will be used is the average mechanism in the Double Auction:
+                1. Order the bids and offers by price
                 2. Calculate the breakeven index (k) based on ordered bids and offers
                 3. Find the price as the average of the kth values (price = (bk + ok)/2:
-                4. Facilitate the transaction by letting first k sellers (edge server) sell offer to the first k buyers (device)
-                5. Notify the buyer (device) and seller (edge server)
+                4. Allocate the resource by letting first k sellers (edge server) sell offer to the first k buyers (device).
+                5. If the resource cannot be allocated, send the task to the cloud server.
+                6. Notify the buyer (device) and seller (edge server) of all the transactions, whether successful or not.
             */
 
-            // check that offers and bids are in the list before ordering them
-            if (!edgeServerOffer.Any() || !deviceBid.Any())
+            // Order the bids and offers by price
+            var orderedBids = deviceBid.OrderBy(b => b.Price).ToList();
+            var orderedOffers = edgeServerOffer.OrderBy(o => o.Price).ToList();
+
+            // Calculate the breakeven index (k) based on ordered bids and offers
+            int k = Math.Min(orderedBids.Count, orderedOffers.Count);
+
+            // find the price as the average of the kth values => price = (bk + ok) / 2
+            if (k > 0)
             {
-                return;
-            }
-            else
-            {
-                // begin to order the prices of the bids and offers
-                var orderedBids = deviceBid.OrderBy(b => b.Price).ToList();
-                var orderedOffers = edgeServerOffer.OrderBy(o => o.Price).ToList();
+                double price = (orderedBids[k-1].Price + orderedOffers[k-1].Price) / 2;
 
-                // calculate the breakeven index (k)
-                int k = 0;
-
-                for (int i = 0; i < orderedBids.Count; i++)
-                {
-                    // if the price of the bid is greater than or equal to the price of the offer,
-                    // then set k = i
-                    if (orderedBids[i].Price >= orderedOffers[i].Price)
-                    {
-                        k = i;
-                        break;
-                    } 
-                }
-
-                // calculate the price as the average of the kth values
-                double price = (orderedBids[k].Price + orderedOffers[k].Price) / 2;
-
-
-                // To avoid getting the error "Index was out of range. Must be non-negative and less than the size of the collection."
-                // get the minimum value between the number of bids and offers
-                int min = Math.Min(orderedBids.Count, orderedOffers.Count);
-                // facilitate the transaction by letting first k sellers (edge server) sell offer to the first k buyers (device)
+                // allocate the resource
                 for (int i = 0; i < k; i++)
                 {
-                    if (orderedBids[i].Price >= orderedOffers[i].Price) 
-                    {
-                        // notify the buyer (device) and seller (edge server)
-                        NotifyDevice(orderedBids[i].DeviceAgentID, price);
-                        NotifyEdgeServer(orderedOffers[i].EdgeServerAgentID, price);
-                    }
+                    NotifyDevice(orderedBids[i].DeviceAgentID, price);
+                    NotifyEdgeServer(orderedOffers[i].EdgeServerAgentID, price);
+
+                    // remove the offer and the bid
+                    deviceBid.Remove(orderedBids[i]);
+                    edgeServerOffer.Remove(orderedOffers[i]);
                 }
+            }
+
+            // if the resource cannot be allocated, inform the device agent
+            // and then send the task to the cloud server
+            foreach (var bid in deviceBid)
+            {
+                Send(bid.DeviceAgentID, $"Sorry, no offer available. Task will be sent to the cloud server");
+                Send("cloudServer", $"Process {bid.Quantity} Mb of {bid.DeviceAgentID}");
             }
         }
 
         private void NotifyDevice(string deviceAgentID, double price)
         {
-            throw new NotImplementedException();
+            Bid bid = new Bid
+            {
+                DeviceAgentID = deviceAgentID,
+                Price = price
+            };
+
+            Send(deviceAgentID, $"Your task has been allocated with a price at £ {price}");
         }
 
         private void NotifyEdgeServer(string edgeServerAgentID, double price)
         {
-            throw new NotImplementedException();
+            Offer offer = new Offer
+            {
+                EdgeServerAgentID = edgeServerAgentID,
+                Price = price
+            };
+
+            Send(edgeServerAgentID, $"You have been allocated with a task at £ {price}");
         }
     }
 }

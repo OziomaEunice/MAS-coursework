@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.ExceptionServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -39,11 +40,34 @@ namespace MAS
             {
                 Console.WriteLine($"\t{message.Format()}");
                 message.Parse(out string action, out List<string> parameters);
+
+                switch (action)
+                {
+                    case "Process":
+                        HandleProcess(message.Sender, Convert.ToInt32(parameters[0]));
+                        break;
+
+                    default:
+                        break;
+                }
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
             }
+        }
+
+        private void HandleProcess(string deviceAgent, int taskSizeQuantity)
+        {
+            // Send message to the device agent that the task will be process, 
+            // however, there will be a fee to be paid.
+            Bid bid = new Bid 
+            { 
+                DeviceAgentID = deviceAgent,
+                Quantity = taskSizeQuantity
+            };
+
+            Send(deviceAgent, $"Cost of processing {taskSizeQuantity} Mb is £ {costOfService}");
         }
     }
 }
