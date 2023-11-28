@@ -35,6 +35,14 @@ namespace MAS
         {
             TaskSize = random.Next(100, 1100);  // 100Mb to 1099Mb
             Valuation = random.Next(70, 521);  // £70 to £520
+
+            // make the agent randomly have a resource listed in the Resources {}
+            Array resourceItems = Enum.GetValues(typeof(Resources));
+            int indexOfResources = random.Next(resourceItems.Length);
+            Resources[] resourcesArray = (Resources[])resourceItems;
+            resources = resourcesArray[indexOfResources];
+
+
             Send("marketplace", $"Bid {TaskSize} Mb at £ {Valuation}");
             Send("marketplace", $"Search for {resources}");
         }

@@ -38,6 +38,13 @@ namespace MAS
         {
             Capacity = random.Next(300, 1201);  // 300Mb to 1200Mb
             CostPerUnit = random.Next(50, 501);  // £50 to £500 per 10Mb
+
+
+            // make the agent randomly have a resource listed in the Resources {}
+            Array resourceItems = Enum.GetValues(typeof(Resources));
+            int indexOfResources = random.Next(resourceItems.Length);
+            Resources[] resourcesArray = (Resources[])resourceItems;
+            resources = resourcesArray[indexOfResources];
             
             Send("marketplace", $"Offer {Capacity} Mb at £ {CostPerUnit} per 10Mb");
             Send("marketplace", $"Resource available: {resources}");

@@ -67,9 +67,13 @@ namespace MAS
                         HandleBid(message.Sender, Convert.ToInt32(parameters[0]), Convert.ToDouble(parameters[4]));
                         break;
 
-                    //case "Cost":
-                        //HandleFee(message.Sender, Convert.ToInt32(parameters[8]));
-                        //break;
+                    case "Resource":
+                        HandleResource(message.Sender, parameters[0]);
+                        break;
+
+                    case "Search":
+                        HandleSearch(message.Sender, parameters[0]);
+                        break;
 
                     default:
                         break;
@@ -81,16 +85,7 @@ namespace MAS
             }
         }
 
-        /*private void HandleFee(string device, int fee)
-        {
-            // Get the fee from the cloud server and submit it to the device agent
-            //Bid bid = new Bid 
-            {
-                DeviceAgentID = device
-            };
-
-            //Send(device, $"The fee received from the cloud server is {fee}");
-        }*/
+        // handle offers received from edge servers
         private void HandleOffer(string edgeServer, int capacity, double price)
         {
             // create an offer object from the received parameters and add it to the list of the edgeServerOffer list
@@ -112,6 +107,8 @@ namespace MAS
             DoubleAuction();  // call the double auction method
         }
 
+
+        // handle bids received from devices
         private void HandleBid(string device, int size, double price)
         {
             // create a bid object from the received parameters and add it to the list of the deviceBid list
@@ -133,6 +130,8 @@ namespace MAS
             DoubleAuction();  // call the double auction method
         }
 
+
+        // match bid and offers and allocate resources using double auction (average mechanism)
         private void DoubleAuction()
         {
             /* To allocate the resource, the auction protocol that will be used is the average mechanism in the Double Auction:
@@ -197,6 +196,44 @@ namespace MAS
             };
 
             Send(edgeServerAgentID, $"You have been allocated with a task at £ {price}");
+        }
+
+
+        // handle resources from edge servers
+        private void HandleResource(string edgeServer, string resource)
+        {
+            if (resourcesType.ContainsKey(resource))
+            {
+                List<string> res = resourcesType[resource];
+                if (!res.Contains(resource))
+                    res.Add(resource);              
+            }
+            else
+            {
+                List<string> res = new List<string> { resource };
+                resourcesType.Add(resource, res);
+            }
+        }
+
+
+        // handle search from devices
+        private void HandleSearch(string device, string resource)
+        {
+            /* if the resource requested by the device is available
+             * then allocate the resource to the device, else send a 
+             * message that the requested resource is unavailable
+            */
+
+            if (resourcesType.ContainsKey(resource))
+            {
+                List<string> res = resourcesType[resource];
+                string r = "";
+
+                foreach (string i in res)
+                    r += $"{i} ";
+                Send(device, $"Resource {r.Trim()} allocated to you");
+            }
+            else { Send(device, $"No available resource"); }
         }
     }
 }
