@@ -205,12 +205,12 @@ namespace MAS
             if (resourcesType.ContainsKey(resource))
             {
                 List<string> res = resourcesType[resource];
-                if (!res.Contains(resource))
-                    res.Add(resource);              
+                if (!res.Contains(edgeServer))
+                    res.Add(edgeServer);              
             }
             else
             {
-                List<string> res = new List<string> { resource };
+                List<string> res = new List<string> { edgeServer };
                 resourcesType.Add(resource, res);
             }
         }
