@@ -23,6 +23,9 @@ namespace MAS
             // create edge server agent and add it to the environment
             EdgeServerAgent edgeServerAgent1 = new EdgeServerAgent(); env.Add(edgeServerAgent1, "edgeServer1");
             EdgeServerAgent edgeServerAgent2 = new EdgeServerAgent(); env.Add(edgeServerAgent2, "edgeServer2");
+            /*EdgeServerAgent edgeServerAgent3 = new EdgeServerAgent(); env.Add(edgeServerAgent3, "edgeServer3");
+            EdgeServerAgent edgeServerAgent4 = new EdgeServerAgent(); env.Add(edgeServerAgent4, "edgeServer4");
+            EdgeServerAgent edgeServerAgent5 = new EdgeServerAgent(); env.Add(edgeServerAgent5, "edgeServer5");*/
 
             // create device agent and add it to the environment
             DeviceAgent deviceAgent1 = new DeviceAgent(); env.Add(deviceAgent1, "Mobile device");
