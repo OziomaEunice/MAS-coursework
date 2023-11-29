@@ -75,6 +75,10 @@ namespace MAS
                         HandleSearch(message.Sender, parameters[0]);
                         break;
 
+                    case "Penalty":
+                        HandlePenalty(message.Sender, Convert.ToInt32(parameters[4]));
+                        break;
+
                     default:
                         break;
                 }
@@ -234,6 +238,23 @@ namespace MAS
                 Send(device, $"Resource {r.Trim()} allocated to you");
             }
             else { Send(device, $"No available resource"); }
+        }
+
+
+        // handle penalty cost from cloud server
+        private void HandlePenalty(string cloudServer, int fee)
+        {
+            Send(cloudServer, $"Ok, will inform the device");
+
+            InformDevicePenalty(fee);
+        }
+
+        private void InformDevicePenalty(int fee)
+        {
+            foreach (var bid in deviceBid)
+            {
+                Send(bid.DeviceAgentID, $"Hey, the cloud server informed that the penalty to pay is £ {fee}");
+            }
         }
     }
 }

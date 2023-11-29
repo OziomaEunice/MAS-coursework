@@ -53,11 +53,26 @@ namespace MAS
             {
                 Console.WriteLine($"\t{message.Format()}");
                 message.Parse(out string action, out List<string> parameters);
+
+                /*switch (action)
+                {
+                    case "Hey":
+                        HandlePenaltyPayment(message.Sender, Convert.ToInt32(parameters[11]));
+                        break;
+
+                    default:
+                        break;
+                }*/
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
             }
         }
+
+        /*private void HandlePenaltyPayment(string marketplace, int msg)
+        {
+            Send(marketplace, $"Alright. Payment of £ {msg} will be made.");
+        }*/
     }
 }

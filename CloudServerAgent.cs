@@ -62,7 +62,7 @@ namespace MAS
             // Send message to the marketplace agent that the task will be process, 
             // however, there will be a fee to be paid.
 
-            Send(marketplace, $"Cost of processing {taskSizeQuantity} Mb starts at £ {costOfService}");
+            Send(marketplace, $"Penalty to pay is £ {costOfService} for processing {taskSizeQuantity} Mb");
         }
     }
 }
