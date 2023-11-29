@@ -57,17 +57,12 @@ namespace MAS
             }
         }
 
-        private void HandleProcess(string deviceAgent, int taskSizeQuantity)
+        private void HandleProcess(string marketplace, int taskSizeQuantity)
         {
-            // Send message to the device agent that the task will be process, 
+            // Send message to the marketplace agent that the task will be process, 
             // however, there will be a fee to be paid.
-            Bid bid = new Bid 
-            { 
-                DeviceAgentID = deviceAgent,
-                Quantity = taskSizeQuantity
-            };
 
-            Send(deviceAgent, $"Cost of processing {taskSizeQuantity} Mb is £ {costOfService}");
+            Send(marketplace, $"Cost of processing {taskSizeQuantity} Mb starts at £ {costOfService}");
         }
     }
 }

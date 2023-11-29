@@ -94,8 +94,8 @@ namespace MAS
                 EdgeServerAgentID = edgeServer,
                 Quantity = capacity,
                 Price = price
-            }; 
-            
+            };
+
             edgeServerOffer.Add(offer);
 
             // check that the offer has been added to the list
@@ -153,7 +153,7 @@ namespace MAS
             // find the price as the average of the kth values => price = (bk + ok) / 2
             if (k > 0)
             {
-                double price = (orderedBids[k-1].Price + orderedOffers[k-1].Price) / 2;
+                double price = (orderedBids[k - 1].Price + orderedOffers[k - 1].Price) / 2;
 
                 // allocate the resource
                 for (int i = 0; i < k; i++)
@@ -206,7 +206,7 @@ namespace MAS
             {
                 List<string> res = resourcesType[resource];
                 if (!res.Contains(edgeServer))
-                    res.Add(edgeServer);              
+                    res.Add(edgeServer);
             }
             else
             {
