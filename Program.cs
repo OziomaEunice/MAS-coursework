@@ -11,7 +11,7 @@ namespace MAS
     {
         static void Main(string[] args)
         {
-            var env = new EnvironmentMas(100);
+            var env = new EnvironmentMas(noTurns: 10);
 
 
             // create marketplace agent and add it to the environment
