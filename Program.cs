@@ -31,6 +31,8 @@ namespace MAS
             DeviceAgent deviceAgent1 = new DeviceAgent(); env.Add(deviceAgent1, "Mobile device");
             DeviceAgent deviceAgent2 = new DeviceAgent(); env.Add(deviceAgent2, "Laptop device");
             DeviceAgent deviceAgent3 = new DeviceAgent(); env.Add(deviceAgent3, "Desktop device");
+            /*DeviceAgent deviceAgent4 = new DeviceAgent(); env.Add(deviceAgent4, "Smart TV device");
+            DeviceAgent deviceAgent5 = new DeviceAgent(); env.Add(deviceAgent5, "Tablet device");*/
 
 
             env.Start(); // start the environment
